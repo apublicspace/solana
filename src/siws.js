@@ -34,14 +34,8 @@ class SIWS {
 	}
 
 	certificate({ token }) {
-		const data = Buffer.from(token, "base64");
-		const certificate = JSON.parse(data.toString("utf8"));
-		this.domain = certificate.domain;
-		this.address = certificate.address;
-		this.statement = certificate.statement;
-		this.signature = certificate.signature;
-		this.issued = certificate.issued;
-		this.expires = certificate.expires;
+		this.domain = null;
+		this.statement = null;
 		const unauthorized = {
 			domain: this.domain,
 			address: null,
@@ -50,6 +44,19 @@ class SIWS {
 			issued: null,
 			expires: null
 		};
+		let data;
+		try {
+			data = Buffer.from(token, "base64");
+		} catch (e) {
+			return unauthorized;
+		}
+		const certificate = JSON.parse(data.toString("utf8"));
+		this.domain = certificate.domain;
+		this.address = certificate.address;
+		this.statement = certificate.statement;
+		this.signature = certificate.signature;
+		this.issued = certificate.issued;
+		this.expires = certificate.expires;
 		if (Date.now() < this.expires) {
 			const statementBytes = new TextEncoder().encode(this.statement);
 			const publicKeyBytes = bs58.decode(this.address);
