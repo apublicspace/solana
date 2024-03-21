@@ -18,88 +18,80 @@ npm install @publicspace/solana
 
 ## Sign In With Solana
 
+### Use Server
+
 Import:
 
 ```
-import { SIWS } from "@publicspace/solana"
+import SIWS from "@publicspace/solana"
 ```
 
-Create SIWS instance:
+Prepare user authentication message:
 
 ```
-const siws = new SIWS();
-```
-
-Package user message:
-
-```
-siws.package({ domain, address });
+SIWS.prepare({ domain, address });
 ```
 
 Generate user token for 30 minutes:
 
 ```
-siws.token({ domain, address, statement, signature });
+SIWS.token({ domain, address, statement, signature });
 ```
 
 Generate user token with custom expiration:
 
 ```
-siws.token({ domain, address, statement, signature, expiration });
+SIWS.token({ domain, address, statement, signature, expiration });
 ```
 
 Verify user certificate:
 
 ```
-siws.certificate({ token });
+SIWS.certificate({ token });
 ```
 
 ## Generate Address or Verify Message
 
+### Use Client
+
 Import:
 
 ```
-import { Wallet } from "@publicspace/solana"
-```
-
-Create Wallet instance:
-
-```
-const wallet = new Wallet();
+import Wallet from "@publicspace/solana"
 ```
 
 Generate mnemonic:
 
 ```
-wallet.mnemonic();
+Wallet.mnemonic();
 ```
 
 Generate keypair:
 
 ```
-wallet.keypair();
+Wallet.keypair();
 ```
 
 Generate keypair from mnemonic:
 
 ```
-wallet.keypairFromMnemonic({ mnemonic });
+Wallet.keypairFromMnemonic({ mnemonic });
 ```
 
 Generate keypair from mnemonic and passphrase:
 
 ```
-wallet.keypairFromMnemonic({ mnemonic, passphrase });
+Wallet.keypairFromMnemonic({ mnemonic, passphrase });
 ```
 
-Sign message
+Sign message:
 
 ```
-wallet.sign({ message, privateKey });
+Wallet.sign({ message, privateKey });
 ```
 
-Verify message
+Verify message:
 
 ```
-wallet.verify({ message, signature, publicKey });
+Wallet.verify({ message, signature, publicKey });
 ```
