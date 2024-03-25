@@ -6,14 +6,17 @@ const { ok, unauthorized, error } = require("./utils/response.js");
 
 function mnemonic() {
 	const mnemonic = bip39.generateMnemonic();
-	return mnemonic;
+	return ok("generated mnemonic", mnemonic);
 }
 
 function keypair() {
 	const keypair = nacl.sign.keyPair();
 	const publicKeyBase58 = bs58.encode(Buffer.from(keypair.publicKey));
 	const privateKeyBase58 = bs58.encode(Buffer.from(keypair.secretKey));
-	return { publicKey: publicKeyBase58, privateKey: privateKeyBase58 };
+	return ok("generated keypair", {
+		publicKey: publicKeyBase58,
+		privateKey: privateKeyBase58
+	});
 }
 
 function keypairFromMnemonic({ mnemonic, passphrase }) {
