@@ -1,9 +1,9 @@
 function response(data) {
 	if (data) {
-		if (data.includes("Unauthorized: ")) {
+		if (typeof data === "string" && data.includes("Unauthorized: ")) {
 			return unauthorized(data.replace("Unauthorized: ", ""));
 		}
-		if (data.includes("Error: ")) {
+		if (typeof data === "string" && data.includes("Error: ")) {
 			return error(data.replace("Error: ", ""));
 		}
 		return ok(data);
