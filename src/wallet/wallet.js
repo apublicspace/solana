@@ -34,7 +34,7 @@ function keypairFromMnemonic({ mnemonic, passphrase }) {
 			privateKey: privateKeyBase58
 		};
 	} catch (e) {
-		return { error: "failed to generate keypair from mnemonic" };
+		return "Error: failed to generate keypair from mnemonic";
 	}
 }
 
@@ -53,7 +53,7 @@ function sign({ message, privateKey }) {
 			publicKey
 		);
 		if (!authorized) {
-			return { unauthorized: "bad signature" };
+			return "Unauthorized: bad signature";
 		}
 		return {
 			message: message,
@@ -61,7 +61,7 @@ function sign({ message, privateKey }) {
 			publicKey: publicKeyBase58
 		};
 	} catch (e) {
-		return { error: "failed to sign message" };
+		return "Error: failed to sign message";
 	}
 }
 
@@ -78,7 +78,7 @@ function verify({ message, signature, publicKey }) {
 			publicKeyUint8Array
 		);
 		if (!authorized) {
-			return { unauthorized: "bad signature" };
+			return "Unauthorized: bad signature";
 		}
 		return {
 			message: message,
@@ -86,7 +86,7 @@ function verify({ message, signature, publicKey }) {
 			publicKey: publicKeyBase58
 		};
 	} catch (e) {
-		return { error: "failed to verify message" };
+		return "Error: failed to verify message";
 	}
 }
 

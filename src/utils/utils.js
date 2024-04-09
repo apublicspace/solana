@@ -1,13 +1,11 @@
 function response(data) {
 	if (data) {
-		if (data.unauthorized) {
-			return unauthorized(data.unauthorized);
+		if (data.includes("Unauthorized: ")) {
+			return unauthorized(data.replace("Unauthorized: ", ""));
 		}
-
-		if (data.error) {
-			return error(data.error);
+		if (data.includes("Error: ")) {
+			return error(data.replace("Error: ", ""));
 		}
-
 		return ok(data);
 	}
 }

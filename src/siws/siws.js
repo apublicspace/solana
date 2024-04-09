@@ -8,7 +8,7 @@ function prepare({ domain, address }) {
 		const statement = `I authorize ${domain} to start an account session with my address ${address.slice(0, 4)}...${address.slice(-4)}.\n\nNonce: ${nonce}`;
 		return statement;
 	} catch (e) {
-		return { error: "failed to prepare message" };
+		return "Error: failed to prepare message";
 	}
 }
 
@@ -26,7 +26,7 @@ function token({ domain, address, statement, signature, expires = 1800000 }) {
 		const data = Buffer.from(JSON.stringify(cert));
 		return data.toString("base64");
 	} catch (e) {
-		return { error: "failed to create token" };
+		return "Error: failed to create token";
 	}
 }
 
@@ -35,7 +35,7 @@ function certificate({ token }) {
 		const data = Buffer.from(token, "base64");
 		const certificate = JSON.parse(data.toString("utf8"));
 		if (Date.now() >= certificate.expires) {
-			return { unauthorized: "certificate expired" };
+			return "Unauthorized: certificate expired";
 		}
 		const statementBytes = new TextEncoder().encode(certificate.statement);
 		const publicKeyBytes = bs58.decode(certificate.address);
@@ -46,11 +46,11 @@ function certificate({ token }) {
 			publicKeyBytes
 		);
 		if (!authorized) {
-			return { unauthorized: "bad signature" };
+			return "Unauthorized: bad signature";
 		}
 		return certificate;
 	} catch (e) {
-		return { error: "failed to decode token" };
+		return "Error: failed to decode token";
 	}
 }
 
