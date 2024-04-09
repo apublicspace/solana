@@ -50,6 +50,24 @@ Verify user certificate:
 SIWS.certificate({ token });
 ```
 
+## Response with HTTP Status Code
+
+Import:
+
+```
+import SIWS, { Utils } from "@publicspace/solana"
+```
+
+Usage on certificate:
+
+```
+const cert = SIWS.certificate({ token: token });
+
+return new Response(Utils.response(cert), {
+	headers: { "Content-Type": "application/json" }
+});
+```
+
 ## Generate Address or Verify Message
 
 ### Use Client
