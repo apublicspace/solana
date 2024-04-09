@@ -25,6 +25,4 @@ declare module "@publicspace/solana" {
 	 * @returns A JSON stringified HTTP response with the certificate details if valid, unauthorized if expired or signature mismatch, or an error.
 	 */
 	export function certificate(params: { token: string }): string;
-
-	export { prepare, token, certificate };
 }

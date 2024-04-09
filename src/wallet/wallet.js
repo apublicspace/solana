@@ -2,21 +2,20 @@ const bip39 = require("bip39");
 const bs58 = require("bs58");
 const nacl = require("tweetnacl");
 nacl.util = require("tweetnacl-util");
-const { ok, unauthorized, error } = require("./utils/response.js");
 
 function mnemonic() {
 	const mnemonic = bip39.generateMnemonic();
-	return ok("generated mnemonic", mnemonic);
+	return mnemonic;
 }
 
 function keypair() {
 	const keypair = nacl.sign.keyPair();
 	const publicKeyBase58 = bs58.encode(Buffer.from(keypair.publicKey));
 	const privateKeyBase58 = bs58.encode(Buffer.from(keypair.secretKey));
-	return ok("generated keypair", {
+	return {
 		publicKey: publicKeyBase58,
 		privateKey: privateKeyBase58
-	});
+	};
 }
 
 function keypairFromMnemonic({ mnemonic, passphrase }) {
@@ -30,12 +29,12 @@ function keypairFromMnemonic({ mnemonic, passphrase }) {
 		const keypair = nacl.sign.keyPair.fromSeed(seed);
 		const publicKeyBase58 = bs58.encode(Buffer.from(keypair.publicKey));
 		const privateKeyBase58 = bs58.encode(Buffer.from(keypair.secretKey));
-		return ok("generated keypair from mnemonic", {
+		return {
 			publicKey: publicKeyBase58,
 			privateKey: privateKeyBase58
-		});
+		};
 	} catch (e) {
-		return error("failed to generate keypair from mnemonic");
+		return { error: "failed to generate keypair from mnemonic" };
 	}
 }
 
@@ -54,15 +53,15 @@ function sign({ message, privateKey }) {
 			publicKey
 		);
 		if (!authorized) {
-			return unauthorized("bad signature");
+			return { unauthorized: "bad signature" };
 		}
-		return ok("signed message", {
+		return {
 			message: message,
 			signature: signatureBase58,
 			publicKey: publicKeyBase58
-		});
+		};
 	} catch (e) {
-		return error("failed to sign message");
+		return { error: "failed to sign message" };
 	}
 }
 
@@ -79,15 +78,15 @@ function verify({ message, signature, publicKey }) {
 			publicKeyUint8Array
 		);
 		if (!authorized) {
-			return unauthorized("bad signature");
+			return { unauthorized: "bad signature" };
 		}
-		return ok("authentic signature for message", {
+		return {
 			message: message,
 			signature: signatureBase58,
 			publicKey: publicKeyBase58
-		});
+		};
 	} catch (e) {
-		return error("failed to verify message");
+		return { error: "failed to verify message" };
 	}
 }
 

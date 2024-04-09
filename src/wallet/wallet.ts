@@ -38,6 +38,4 @@ declare module "@publicspace/solana" {
 		signature: string;
 		publicKey: string;
 	}): string;
-
-	export { mnemonic, keypair, keypairFromMnemonic, sign, verify };
 }
